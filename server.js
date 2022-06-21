@@ -35,7 +35,21 @@ app.post('/api/notes', (req, res) => {
             if (err) console.error(err);
             else console.log('Notes updated successfully.');
         });
+    res.json(notesDB);
 });
+
+// delete note from db
+app.delete('/api/notes/:id', (req, res) => {
+    fs.writeFile(
+        path.join(__dirname, '/db/db.json'),
+        JSON.stringify(notesDB.filter(note => note.id !== req.params.id), null, 2),
+        (err) => {
+            if (err) console.error(err);
+            else console.log('Notes updated successfully.');
+        });
+    res.json(notesDB);
+});
+
 
 // start server
 app.listen(PORT, (error) => {
