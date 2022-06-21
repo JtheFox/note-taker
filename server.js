@@ -26,7 +26,7 @@ app.get('/api/notes', (req, res) => {
     res.json(notesDB);
 });
 
-// add notes to db
+// add note to db
 app.post('/api/notes', (req, res) => {
     fs.writeFile(
         path.join(__dirname, '/db/db.json'),
@@ -40,5 +40,5 @@ app.post('/api/notes', (req, res) => {
 // start server
 app.listen(PORT, (error) => {
     if (!error) console.log(`App listening on port ${PORT}`)
-    else console.error('Error occurred, server can\'t start', error);
+    else console.error('Error occurred, server failed to start', error);
 });
