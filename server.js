@@ -17,7 +17,7 @@ const dbOps = {
     read() { return JSON.parse(fs.readFileSync(dbPath)) },
     add(db, note) {
         try {
-            fs.writeFileSync(dbPath, JSON.stringify(db.push({ ...note, id: uuid() }), null, 2));
+            fs.writeFileSync(dbPath, JSON.stringify([...db, { ...note, id: uuid() }], null, 2));
             return 'Successfully updated db';
         } catch {
             return new Error('Error writing to db');
