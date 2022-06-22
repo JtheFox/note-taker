@@ -17,8 +17,9 @@ const dbOps = {
     read() { return JSON.parse(fs.readFileSync(dbPath)) },
     add(db, note) {
         try {
-            fs.writeFileSync(dbPath, JSON.stringify([...db, { ...note, id: uuid() }], null, 2));
-            return 'Successfully updated db';
+            let newNote = { ...note, id: uuid() }
+            fs.writeFileSync(dbPath, JSON.stringify([...db, newNote], null, 2));
+            return newNote;
         } catch {
             return new Error('Error writing to db');
         }
@@ -43,10 +44,10 @@ app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, '/public/notes
 app.get('/api/notes', (req, res) => res.json(dbOps.read()));
 
 // POST Route to add note to db
-app.post('/api/notes', (req, res) => console.log(dbOps.add(dbOps.read(), req.body)));
+app.post('/api/notes', (req, res) => res.send(dbOps.add(dbOps.read(), req.body)));
 
 // DELETE Route to delete note from db
-app.delete('/api/notes/:id', (req, res) => console.log(dbOps.delete(dbOps.read(), req.params.id)));
+app.delete('/api/notes/:id', (req, res) => res.send(dbOps.delete(dbOps.read(), req.params.id)));
 
 
 // start server
